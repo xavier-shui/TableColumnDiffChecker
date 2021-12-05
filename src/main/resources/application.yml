@@ -1,0 +1,13 @@
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    org.springframework.web: error
+    cn.xavier: trace
+server:
+  port: 54321
+mysql:
+  driver-class-name: com.mysql.jdbc.Driver
+  jdbcUrl: jdbc:mysql:///pethome
+  username: root
+  password: 123456

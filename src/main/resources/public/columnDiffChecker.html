@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>列差异对比</title>
+    <script src="static/js/vue.js"></script>
+    <script src="static/js/axios.js"></script>
+    <script src="static/js/common.js"></script>
+</head>
+<body>
+    <div id="myDiv">
+        请选择两表进行列的比较 <br/>
+        <select  v-model="table1" @click="clearResult">
+            <option v-for="table in allTables">{{table}}</option>
+        </select>
+        <select  v-model="table2" @click="clearResult">
+            <option v-for="table in allTables">{{table}}</option>
+        </select>
+        <button @click="diffCheck">比较</button> <br/>
+        <hr/>
+        {{table1}}特有:<br>
+        <textarea cols="125" rows="5">{{uniqueInLeft}}</textarea><br>
+        {{table2}}特有:<br>
+        <textarea cols="125" rows="5">{{uniqueInRight}}</textarea><br>
+        公有:<br>
+        <textarea cols="125" rows="5">{{common}}</textarea><br>
+    </div>
+    <script type="text/javascript">
+        new Vue({
+            el: "#myDiv",
+            data: {
+                table1: "",
+                table2: "",
+                allTables: [],
+                uniqueInLeft: "",
+                uniqueInRight: "",
+                common: ""
+            },
+            methods: {
+                getTables() {
+                    this.$http.get("/tables")
+                        .then(response => {
+                            this.allTables = response.data;
+                        })
+                },
+                diffCheck() {
+                    this.$http.post("/diffCheck", {table1: this.table1, table2: this.table2})
+                        .then(response => {
+                            let result = response.data;
+                            this.uniqueInLeft = result.uniqueInLeft;
+                            this.uniqueInRight = result.uniqueInRight;
+                            this.common = result.common;
+                        })
+                },
+                clearResult() {
+                    this.uniqueInLeft = "";
+                    this.uniqueInRight = "";
+                    this.common = "";
+                }
+            },
+            mounted() {
+                this.getTables();
+            }
+        })
+    </script>
+
+</body>
+</html>
