@@ -35,6 +35,16 @@
             <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
+	
+	<build>
+        <plugins>
+            <plugin>
+                <!--springboot使用插件打成的fat jar包可以直接运行-->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>
